@@ -1,0 +1,1913 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solus - Luxury Villa for Sale</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #c9a96e;
+        --primary-dark: #a88a4f;
+        --dark: #1a1a1a;
+        --darker: #111;
+        --light: #f5f5f5;
+        --white: #ffffff;
+        --gray: #666;
+        --light-gray: #e0e0e0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--dark);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* ===== NAVIGATION ===== */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 20px 0;
+        transition: all 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        background: var(--white);
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        padding: 15px 0;
+      }
+
+      .navbar.scrolled .nav-links a {
+        color: var(--dark);
+      }
+
+      .navbar.scrolled .logo {
+        color: var(--dark);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--white);
+        text-decoration: none;
+        letter-spacing: 2px;
+        transition: color 0.3s;
+      }
+
+      .logo span {
+        color: var(--primary);
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 35px;
+      }
+
+      .nav-links a {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: color 0.3s;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .mobile-menu {
+        display: none;
+        font-size: 24px;
+        color: var(--white);
+        cursor: pointer;
+      }
+
+      .navbar.scrolled .mobile-menu {
+        color: var(--dark);
+      }
+
+      /* ===== HERO SLIDER ===== */
+      .hero {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .hero-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .hero-slide.active {
+        opacity: 1;
+      }
+
+      .hero-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.3),
+          rgba(0, 0, 0, 0.6)
+        );
+      }
+
+      .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: var(--white);
+        z-index: 2;
+        width: 90%;
+        max-width: 800px;
+      }
+
+      .hero-subtitle {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        margin-bottom: 20px;
+        color: var(--primary);
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards 0.5s;
+      }
+
+      .hero-title {
+        font-size: 60px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        line-height: 1.1;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards 0.7s;
+      }
+
+      .hero-price {
+        font-size: 36px;
+        color: var(--primary);
+        font-weight: 300;
+        margin-bottom: 30px;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards 0.9s;
+      }
+
+      .hero-btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background: var(--primary);
+        color: var(--white);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 14px;
+        font-weight: 600;
+        border: 2px solid var(--primary);
+        transition: all 0.3s;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards 1.1s;
+      }
+
+      .hero-btn:hover {
+        background: transparent;
+        color: var(--primary);
+      }
+
+      .slider-dots {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 3;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .dot.active {
+        background: var(--primary);
+        transform: scale(1.2);
+      }
+
+      .slider-arrows {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30px;
+        z-index: 3;
+      }
+
+      .arrow {
+        width: 50px;
+        height: 50px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 18px;
+      }
+
+      .arrow:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===== QUICK INFO BAR ===== */
+      .quick-info {
+        background: var(--darker);
+        padding: 40px 0;
+        position: relative;
+        z-index: 10;
+      }
+
+      .info-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+      }
+
+      .info-item {
+        text-align: center;
+        color: var(--white);
+        padding: 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .info-item:last-child {
+        border-right: none;
+      }
+
+      .info-item i {
+        font-size: 32px;
+        color: var(--primary);
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      .info-item h4 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .info-item p {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--gray);
+      }
+
+      /* ===== SECTION STYLES ===== */
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-title h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-title h2::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--primary);
+      }
+
+      .section-title p {
+        color: var(--gray);
+        font-size: 16px;
+        margin-top: 25px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* ===== ABOUT PROPERTY ===== */
+      .about {
+        background: var(--white);
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .about-image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+      }
+
+      .about-image img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        transition: transform 0.5s;
+      }
+
+      .about-image:hover img {
+        transform: scale(1.05);
+      }
+
+      .about-content h3 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: var(--dark);
+      }
+
+      .about-content p {
+        color: var(--gray);
+        margin-bottom: 20px;
+        line-height: 1.8;
+      }
+
+      .about-features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .about-feature {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .about-feature i {
+        color: var(--primary);
+        font-size: 18px;
+      }
+
+      .about-feature span {
+        font-weight: 500;
+        color: var(--dark);
+      }
+
+      /* ===== AMENITIES ===== */
+      .amenities {
+        background: var(--light);
+      }
+
+      .amenities-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+      }
+
+      .amenity-card {
+        background: var(--white);
+        padding: 40px 30px;
+        text-align: center;
+        border-radius: 4px;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .amenity-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .amenity-card i {
+        font-size: 40px;
+        color: var(--primary);
+        margin-bottom: 20px;
+        display: block;
+      }
+
+      .amenity-card h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: var(--dark);
+      }
+
+      .amenity-card p {
+        font-size: 14px;
+        color: var(--gray);
+      }
+
+      /* ===== GALLERY ===== */
+      .gallery {
+        background: var(--white);
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .gallery-item {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        transition: transform 0.5s;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.1);
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(201, 169, 110, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+      }
+
+      .gallery-overlay i {
+        color: var(--white);
+        font-size: 30px;
+      }
+
+      .gallery-item.large {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+
+      .gallery-item.large img {
+        height: 615px;
+      }
+
+      /* Lightbox */
+      .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .lightbox.active {
+        display: flex;
+      }
+
+      .lightbox img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        color: var(--white);
+        font-size: 40px;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .lightbox-close:hover {
+        color: var(--primary);
+      }
+
+      /* ===== FLOOR PLANS ===== */
+      .floor-plans {
+        background: var(--light);
+      }
+
+      .floor-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 50px;
+      }
+
+      .floor-tab {
+        padding: 12px 30px;
+        background: var(--white);
+        border: 2px solid var(--light-gray);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+      }
+
+      .floor-tab.active,
+      .floor-tab:hover {
+        background: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+      }
+
+      .floor-content {
+        display: none;
+        background: var(--white);
+        padding: 50px;
+        border-radius: 4px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
+      }
+
+      .floor-content.active {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        align-items: center;
+      }
+
+      .floor-image img {
+        width: 100%;
+        border: 1px solid var(--light-gray);
+      }
+
+      .floor-details h3 {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+
+      .floor-details p {
+        color: var(--gray);
+        margin-bottom: 30px;
+      }
+
+      .floor-specs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .floor-spec {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: var(--light);
+        border-radius: 4px;
+      }
+
+      .floor-spec i {
+        font-size: 24px;
+        color: var(--primary);
+      }
+
+      .floor-spec div strong {
+        display: block;
+        color: var(--dark);
+      }
+
+      .floor-spec div span {
+        font-size: 13px;
+        color: var(--gray);
+      }
+
+      /* ===== LOCATION ===== */
+      .location {
+        background: var(--white);
+      }
+
+      .location-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
+
+      .location-map {
+        height: 500px;
+        background: var(--light-gray);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .location-map iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .location-info {
+        padding: 60px;
+        background: var(--darker);
+        color: var(--white);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .location-info h3 {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+
+      .location-info p {
+        color: var(--gray);
+        margin-bottom: 30px;
+        line-height: 1.8;
+      }
+
+      .location-list {
+        list-style: none;
+      }
+
+      .location-list li {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        color: var(--light-gray);
+      }
+
+      .location-list li i {
+        color: var(--primary);
+        font-size: 20px;
+        width: 30px;
+      }
+
+      /* ===== CONTACT ===== */
+      .contact {
+        background: var(--light);
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+      }
+
+      .contact-form {
+        background: var(--white);
+        padding: 50px;
+        border-radius: 4px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--dark);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid var(--light-gray);
+        font-family: inherit;
+        font-size: 15px;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 18px;
+        background: var(--primary);
+        color: var(--white);
+        border: none;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .submit-btn:hover {
+        background: var(--primary-dark);
+      }
+
+      .contact-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .contact-info h3 {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+
+      .contact-info > p {
+        color: var(--gray);
+        margin-bottom: 40px;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .contact-item i {
+        width: 50px;
+        height: 50px;
+        background: var(--primary);
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .contact-item div h4 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .contact-item div p {
+        color: var(--gray);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .social-links a {
+        width: 45px;
+        height: 45px;
+        border: 2px solid var(--light-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dark);
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .social-links a:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--white);
+      }
+
+      /* ===== FOOTER ===== */
+      .footer {
+        background: var(--darker);
+        color: var(--white);
+        padding: 60px 0 30px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-brand h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .footer-brand h3 span {
+        color: var(--primary);
+      }
+
+      .footer-brand p {
+        color: var(--gray);
+        line-height: 1.8;
+      }
+
+      .footer-links h4 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: var(--white);
+      }
+
+      .footer-links ul {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 12px;
+      }
+
+      .footer-links a {
+        color: var(--gray);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 30px;
+        text-align: center;
+        color: var(--gray);
+        font-size: 14px;
+      }
+
+      /* ===== SCROLL TO TOP ===== */
+      .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: var(--primary);
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+        z-index: 999;
+        text-decoration: none;
+      }
+
+      .scroll-top.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scroll-top:hover {
+        background: var(--primary-dark);
+        transform: translateY(-5px);
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 992px) {
+        .hero-title {
+          font-size: 42px;
+        }
+
+        .info-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .info-item {
+          border-right: none;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .about-grid,
+        .floor-content.active,
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .amenities-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .gallery-item.large {
+          grid-column: span 2;
+          grid-row: span 1;
+        }
+
+        .gallery-item.large img {
+          height: 300px;
+        }
+
+        .location-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: var(--white);
+          flex-direction: column;
+          padding: 20px;
+          gap: 15px;
+          box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .nav-links a {
+          color: var(--dark);
+        }
+
+        .mobile-menu {
+          display: block;
+        }
+
+        .hero-title {
+          font-size: 32px;
+        }
+
+        .hero-price {
+          font-size: 24px;
+        }
+
+        .info-container {
+          grid-template-columns: 1fr;
+        }
+
+        .amenities-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-item.large {
+          grid-column: span 1;
+        }
+
+        .floor-tabs {
+          flex-wrap: wrap;
+        }
+
+        .location-info {
+          padding: 40px 20px;
+        }
+
+        .contact-form {
+          padding: 30px 20px;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .section {
+          padding: 60px 0;
+        }
+
+        .section-title h2 {
+          font-size: 28px;
+        }
+      }
+
+      /* ===== ANIMATIONS ===== */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="#" class="logo">SOLUS<span>.</span></a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#amenities">Amenities</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#floorplans">Floor Plans</a></li>
+          <li><a href="#location">Location</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-menu" id="mobileMenu">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <section class="hero" id="home">
+      <div class="hero-slide active">
+        <img
+          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"
+          alt="Luxury Villa Exterior"
+        />
+      </div>
+      <div class="hero-slide">
+        <img
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80"
+          alt="Modern Living Room"
+        />
+      </div>
+      <div class="hero-slide">
+        <img
+          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80"
+          alt="Elegant Interior"
+        />
+      </div>
+
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <p class="hero-subtitle">Luxury Villa For Sale</p>
+        <h1 class="hero-title">Experience Unparalleled Elegance</h1>
+        <p class="hero-price">$2,450,000</p>
+        <a href="#contact" class="hero-btn">Schedule a Tour</a>
+      </div>
+
+      <div class="slider-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+      </div>
+
+      <div class="slider-arrows">
+        <div class="arrow" id="prevSlide">
+          <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="arrow" id="nextSlide">
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Info Bar -->
+    <div class="quick-info">
+      <div class="info-container">
+        <div class="info-item">
+          <i class="fas fa-bed"></i>
+          <h4>5</h4>
+          <p>Bedrooms</p>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-bath"></i>
+          <h4>4</h4>
+          <p>Bathrooms</p>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-ruler-combined"></i>
+          <h4>4,500</h4>
+          <p>Sq. Ft.</p>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-car"></i>
+          <h4>3</h4>
+          <p>Car Garage</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Property -->
+    <section class="section about" id="about">
+      <div class="container">
+        <div class="section-title fade-in">
+          <h2>About This Property</h2>
+          <p>Discover what makes this home truly exceptional</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-image fade-in">
+            <img
+              src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
+              alt="Property Interior"
+            />
+          </div>
+          <div class="about-content fade-in">
+            <h3>A Masterpiece of Modern Architecture</h3>
+            <p>
+              Welcome to an extraordinary residence that redefines luxury
+              living. This stunning villa combines contemporary design with
+              timeless elegance, offering an unparalleled lifestyle in one of
+              the most sought-after neighborhoods.
+            </p>
+            <p>
+              Every detail has been meticulously crafted, from the soaring
+              ceilings and floor-to-ceiling windows to the premium finishes and
+              smart home technology. The open-concept layout seamlessly blends
+              indoor and outdoor living, creating spaces that are both grand and
+              intimate.
+            </p>
+            <div class="about-features">
+              <div class="about-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Smart Home System</span>
+              </div>
+              <div class="about-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Infinity Pool</span>
+              </div>
+              <div class="about-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Wine Cellar</span>
+              </div>
+              <div class="about-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Home Theater</span>
+              </div>
+              <div class="about-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Gourmet Kitchen</span>
+              </div>
+              <div class="about-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Private Garden</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Amenities -->
+    <section class="section amenities" id="amenities">
+      <div class="container">
+        <div class="section-title fade-in">
+          <h2>Property Amenities</h2>
+          <p>World-class features designed for your comfort</p>
+        </div>
+        <div class="amenities-grid">
+          <div class="amenity-card fade-in">
+            <i class="fas fa-swimming-pool"></i>
+            <h4>Swimming Pool</h4>
+            <p>Heated infinity pool with stunning views</p>
+          </div>
+          <div class="amenity-card fade-in">
+            <i class="fas fa-dumbbell"></i>
+            <h4>Fitness Center</h4>
+            <p>State-of-the-art gym equipment</p>
+          </div>
+          <div class="amenity-card fade-in">
+            <i class="fas fa-shield-alt"></i>
+            <h4>24/7 Security</h4>
+            <p>Gated community with surveillance</p>
+          </div>
+          <div class="amenity-card fade-in">
+            <i class="fas fa-tree"></i>
+            <h4>Landscaped Gardens</h4>
+            <p>Beautifully maintained outdoor spaces</p>
+          </div>
+          <div class="amenity-card fade-in">
+            <i class="fas fa-wifi"></i>
+            <h4>High-Speed Internet</h4>
+            <p>Fiber optic connectivity throughout</p>
+          </div>
+          <div class="amenity-card fade-in">
+            <i class="fas fa-snowflake"></i>
+            <h4>Climate Control</h4>
+            <p>Multi-zone HVAC system</p>
+          </div>
+          <div class="amenity-card fade-in">
+            <i class="fas fa-fire"></i>
+            <h4>Fireplace</h4>
+            <p>Designer fireplaces in living areas</p>
+          </div>
+          <div class="amenity-card fade-in">
+            <i class="fas fa-utensils"></i>
+            <h4>Outdoor Kitchen</h4>
+            <p>BBQ area with full kitchen setup</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="section gallery" id="gallery">
+      <div class="container">
+        <div class="section-title fade-in">
+          <h2>Property Gallery</h2>
+          <p>Take a visual tour of this magnificent home</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item large" onclick="openLightbox(this)">
+            <img
+              src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80"
+              alt="Living Room"
+            />
+            <div class="gallery-overlay">
+              <i class="fas fa-expand"></i>
+            </div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox(this)">
+            <img
+              src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=80"
+              alt="Kitchen"
+            />
+            <div class="gallery-overlay">
+              <i class="fas fa-expand"></i>
+            </div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox(this)">
+            <img
+              src="https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=600&q=80"
+              alt="Bedroom"
+            />
+            <div class="gallery-overlay">
+              <i class="fas fa-expand"></i>
+            </div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox(this)">
+            <img
+              src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=600&q=80"
+              alt="Bathroom"
+            />
+            <div class="gallery-overlay">
+              <i class="fas fa-expand"></i>
+            </div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox(this)">
+            <img
+              src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&q=80"
+              alt="Dining Room"
+            />
+            <div class="gallery-overlay">
+              <i class="fas fa-expand"></i>
+            </div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox(this)">
+            <img
+              src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600&q=80"
+              alt="Exterior"
+            />
+            <div class="gallery-overlay">
+              <i class="fas fa-expand"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+      <span class="lightbox-close">&times;</span>
+      <img src="" alt="Full view" id="lightboxImg" />
+    </div>
+
+    <!-- Floor Plans -->
+    <section class="section floor-plans" id="floorplans">
+      <div class="container">
+        <div class="section-title fade-in">
+          <h2>Floor Plans</h2>
+          <p>Explore the thoughtfully designed layouts</p>
+        </div>
+        <div class="floor-tabs">
+          <button class="floor-tab active" onclick="showFloor(0)">
+            Ground Floor
+          </button>
+          <button class="floor-tab" onclick="showFloor(1)">First Floor</button>
+          <button class="floor-tab" onclick="showFloor(2)">Basement</button>
+        </div>
+
+        <div class="floor-content active" id="floor0">
+          <div class="floor-image">
+            <img
+              src="https://images.unsplash.com/photo-1628744876497-eb30460be9f6?w=800&q=80"
+              alt="Ground Floor Plan"
+            />
+          </div>
+          <div class="floor-details">
+            <h3>Ground Floor</h3>
+            <p>
+              The main living level features an open-concept design with soaring
+              ceilings, gourmet kitchen, formal dining, and a grand living room
+              that opens to the pool terrace.
+            </p>
+            <div class="floor-specs">
+              <div class="floor-spec">
+                <i class="fas fa-bed"></i>
+                <div>
+                  <strong>2 Bedrooms</strong>
+                  <span>Master + Guest Suite</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-bath"></i>
+                <div>
+                  <strong>2.5 Bathrooms</strong>
+                  <span>Including powder room</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-ruler-combined"></i>
+                <div>
+                  <strong>2,200 sq ft</strong>
+                  <span>Living space</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-car"></i>
+                <div>
+                  <strong>2 Car Garage</strong>
+                  <span>Attached</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="floor-content" id="floor1">
+          <div class="floor-image">
+            <img
+              src="https://images.unsplash.com/photo-1628744876497-eb30460be9f6?w=800&q=80"
+              alt="First Floor Plan"
+            />
+          </div>
+          <div class="floor-details">
+            <h3>First Floor</h3>
+            <p>
+              The upper level offers a luxurious master retreat with walk-in
+              closets, spa-like ensuite, plus two additional bedrooms and a
+              versatile loft space.
+            </p>
+            <div class="floor-specs">
+              <div class="floor-spec">
+                <i class="fas fa-bed"></i>
+                <div>
+                  <strong>3 Bedrooms</strong>
+                  <span>Master + 2 Guest Rooms</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-bath"></i>
+                <div>
+                  <strong>2 Bathrooms</strong>
+                  <span>Full ensuite baths</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-ruler-combined"></i>
+                <div>
+                  <strong>1,800 sq ft</strong>
+                  <span>Living space</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-book"></i>
+                <div>
+                  <strong>Office/Study</strong>
+                  <span>Private workspace</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="floor-content" id="floor2">
+          <div class="floor-image">
+            <img
+              src="https://images.unsplash.com/photo-1628744876497-eb30460be9f6?w=800&q=80"
+              alt="Basement Plan"
+            />
+          </div>
+          <div class="floor-details">
+            <h3>Basement</h3>
+            <p>
+              The finished basement includes a home theater, wine cellar,
+              fitness center, and ample storage space — perfect for
+              entertainment and relaxation.
+            </p>
+            <div class="floor-specs">
+              <div class="floor-spec">
+                <i class="fas fa-film"></i>
+                <div>
+                  <strong>Home Theater</strong>
+                  <span>12-seat capacity</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-wine-glass"></i>
+                <div>
+                  <strong>Wine Cellar</strong>
+                  <span>500+ bottle capacity</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-ruler-combined"></i>
+                <div>
+                  <strong>500 sq ft</strong>
+                  <span>Additional space</span>
+                </div>
+              </div>
+              <div class="floor-spec">
+                <i class="fas fa-box"></i>
+                <div>
+                  <strong>Storage</strong>
+                  <span>Climate controlled</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location -->
+    <section class="section location" id="location">
+      <div class="location-grid">
+        <div class="location-map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3569.039043720948!2d81.05262177400354!3d26.551013575543518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bed001e3d836b%3A0x6bbdacea7ec6d897!2sEr.%20Shyam%20Vinay%20Maurya!5e0!3m2!1sen!2sin!4v1782578091139!5m2!1sen!2sin"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe
+          >>
+        </div>
+        <div class="location-info">
+          <h3>Prime Location</h3>
+          <p>
+            Situated in an exclusive neighborhood, this property offers the
+            perfect balance of privacy and convenience. Enjoy easy access to
+            top-rated schools, fine dining, shopping, and recreational
+            facilities.
+          </p>
+          <ul class="location-list">
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              <span>123 Luxury Lane, Lucknow, CA 90210</span>
+            </li>
+            <li>
+              <i class="fas fa-school"></i>
+              <span>Top-rated schools within 2 miles</span>
+            </li>
+            <li>
+              <i class="fas fa-shopping-bag"></i>
+              <span>Premium shopping centers nearby</span>
+            </li>
+            <li>
+              <i class="fas fa-plane"></i>
+              <span>15 minutes to international airport</span>
+            </li>
+            <li>
+              <i class="fas fa-hospital"></i>
+              <span>World-class medical facilities</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="section-title fade-in">
+          <h2>Get In Touch</h2>
+          <p>Schedule a private viewing or request more information</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-form fade-in">
+            <form id="contactForm" method="post">
+              <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" placeholder="Shyam Vinay Maurya" required />
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  placeholder="shyamvinaymaurya13@gmail.com"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" placeholder="8115445763" />
+              </div>
+              <div class="form-group">
+                <label>Subject</label>
+                <input type="text" placeholder="Property Inquiry" />
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea
+                  placeholder="I'm interested in scheduling a viewing..."
+                ></textarea>
+              </div>
+              <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+          </div>
+          <div class="contact-info fade-in">
+            <h3>Contact Agent</h3>
+            <p>
+              Our dedicated team is ready to assist you with any questions about
+              this exceptional property.
+            </p>
+
+            <div class="contact-item">
+              <i class="fas fa-user"></i>
+              <div>
+                <h4>Shyam Vinay Maurya</h4>
+                <p>Web Developer</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <div>
+                <h4>Phone</h4>
+                <p>8115445763</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <div>
+                <h4>Email</h4>
+                <p>shyamvinaymaurya13@gmail.com</p>
+              </div>
+            </div>
+            <!-- <div class="contact-item">
+              <i class="fas fa-clock"></i>
+              <div>
+                <h4>Office Hours</h4>
+                <p>Mon - Sat: 9:00 AM - 6:00 PM</p>
+              </div>
+            </div> -->
+
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <h3>SOLUS<span>.</span></h3>
+            <p>
+              Your trusted partner in finding the perfect luxury property. We
+              specialize in exclusive listings and premium real estate services.
+            </p>
+          </div>
+          <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#gallery">Gallery</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Property</h4>
+            <ul>
+              <li><a href="#amenities">Amenities</a></li>
+              <li><a href="#floorplans">Floor Plans</a></li>
+              <li><a href="#location">Location</a></li>
+              <li><a href="#">Virtual Tour</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Sitemap</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Solus. All rights reserved. Designed with care.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <a href="#" class="scroll-top" id="scrollTop">
+      <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script>
+      // ===== NAVBAR SCROLL =====
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // ===== MOBILE MENU =====
+      const mobileMenu = document.getElementById("mobileMenu");
+      const navLinks = document.getElementById("navLinks");
+
+      mobileMenu.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        const icon = mobileMenu.querySelector("i");
+        if (navLinks.classList.contains("active")) {
+          icon.classList.remove("fa-bars");
+          icon.classList.add("fa-times");
+          navbar.classList.add("scrolled");
+        } else {
+          icon.classList.remove("fa-times");
+          icon.classList.add("fa-bars");
+          if (window.scrollY <= 50) {
+            navbar.classList.remove("scrolled");
+          }
+        }
+      });
+
+      // Close mobile menu when clicking a link
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("active");
+          mobileMenu.querySelector("i").classList.remove("fa-times");
+          mobileMenu.querySelector("i").classList.add("fa-bars");
+        });
+      });
+
+      // ===== HERO SLIDER =====
+      const slides = document.querySelectorAll(".hero-slide");
+      const dots = document.querySelectorAll(".dot");
+      let currentSlide = 0;
+      let slideInterval;
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === index);
+        });
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === index);
+        });
+        currentSlide = index;
+      }
+
+      function nextSlide() {
+        showSlide((currentSlide + 1) % slides.length);
+      }
+
+      function prevSlide() {
+        showSlide((currentSlide - 1 + slides.length) % slides.length);
+      }
+
+      document.getElementById("nextSlide").addEventListener("click", () => {
+        nextSlide();
+        resetInterval();
+      });
+
+      document.getElementById("prevSlide").addEventListener("click", () => {
+        prevSlide();
+        resetInterval();
+      });
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          showSlide(index);
+          resetInterval();
+        });
+      });
+
+      function startInterval() {
+        slideInterval = setInterval(nextSlide, 5000);
+      }
+
+      function resetInterval() {
+        clearInterval(slideInterval);
+        startInterval();
+      }
+
+      startInterval();
+
+      // ===== SCROLL ANIMATIONS =====
+      const fadeElements = document.querySelectorAll(".fade-in");
+
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      }, observerOptions);
+
+      fadeElements.forEach((el) => observer.observe(el));
+
+      // ===== LIGHTBOX =====
+      function openLightbox(element) {
+        const img = element.querySelector("img");
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightboxImg");
+
+        lightboxImg.src = img.src;
+        lightbox.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        const lightbox = document.getElementById("lightbox");
+        lightbox.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      // Close lightbox with Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeLightbox();
+        }
+      });
+
+      // ===== FLOOR PLANS TABS =====
+      function showFloor(index) {
+        // Update tabs
+        document.querySelectorAll(".floor-tab").forEach((tab, i) => {
+          tab.classList.toggle("active", i === index);
+        });
+
+        // Update content
+        document.querySelectorAll(".floor-content").forEach((content, i) => {
+          content.classList.toggle("active", i === index);
+        });
+      }
+
+      // ===== SCROLL TO TOP =====
+      const scrollTop = document.getElementById("scrollTop");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 500) {
+          scrollTop.classList.add("visible");
+        } else {
+          scrollTop.classList.remove("visible");
+        }
+      });
+
+      // ===== CONTACT FORM =====
+      document.getElementById("contactForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Thank you for your inquiry! We will get back to you shortly.");
+        e.target.reset();
+      });
+
+      // ===== SMOOTH SCROLL =====
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            const offset = 80;
+            const targetPosition =
+              target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
